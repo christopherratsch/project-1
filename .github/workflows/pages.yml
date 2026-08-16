@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - claude/birthday-party-organizer-0bo29o
+      - main
   workflow_dispatch:
 
 permissions:
