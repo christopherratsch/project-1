@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>80. Geburtstag – Schloss Steinburg</title>
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --surface: #fffdfa;
+    --ink: #2b2723;
+    --ink-soft: #6d655c;
+    --line: #e3dcd1;
+    --gold: #9c7c3c;
+    --gold-soft: #f0e7d5;
+    --green: #4f7a52;
+    --amber: #a5762a;
+    --red: #99504a;
+    --radius: 10px;
+    --shadow: 0 1px 2px rgba(43,39,35,.05), 0 6px 18px rgba(43,39,35,.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 16px 64px; }
+
+  /* ---------- Kopf ---------- */
+  header {
+    text-align: center;
+    padding: 40px 0 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  header .eyebrow {
+    font-size: 12px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  header h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: clamp(28px, 6vw, 42px);
+    margin: 10px 0 6px;
+    letter-spacing: .01em;
+  }
+  header .meta { color: var(--ink-soft); font-size: 15px; }
+  header .rule {
+    width: 56px; height: 1px; background: var(--gold);
+    margin: 18px auto 0; opacity: .6;
+  }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  nav.tabs button {
+    flex: 1;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink-soft);
+    padding: 10px 6px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  nav.tabs button:hover { color: var(--ink); }
+  nav.tabs button[aria-selected="true"] {
+    background: var(--gold-soft);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  section[hidden] { display: none; }
+
+  /* ---------- Zähler ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat .num {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    line-height: 1.1;
+  }
+  .stat .label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  /* ---------- Formulare ---------- */
+  form.card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+  .grid { display: grid; gap: 10px; }
+  .grid.g2 { grid-template-columns: 1fr 1fr; }
+  .grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label {
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  input[type="text"], input[type="time"], input[type="date"], select, textarea {
+    font: inherit;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 9px 10px;
+    width: 100%;
+    min-width: 0;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: -1px;
+    border-color: var(--gold);
+  }
+  textarea { resize: vertical; min-height: 42px; }
+
+  .checkline {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 15px; color: var(--ink); padding-top: 4px;
+  }
+  .checkline input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--gold); }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+  button.btn {
+    font: inherit;
+    font-size: 15px;
+    border-radius: 7px;
+    padding: 9px 18px;
+    cursor: pointer;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    color: #fff;
+    transition: opacity .15s;
+  }
+  button.btn:hover { opacity: .88; }
+  button.btn.ghost { background: transparent; color: var(--gold); }
+  button.btn.ghost:hover { background: var(--gold-soft); opacity: 1; }
+
+  /* ---------- Listen ---------- */
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: var(--shadow);
+  }
+  .item .body { flex: 1; min-width: 0; }
+  .item .title {
+    font-size: 16px;
+    font-weight: 600;
+    word-break: break-word;
+  }
+  .item .sub {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+    word-break: break-word;
+  }
+  .item .note {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    padding-left: 10px;
+    border-left: 2px solid var(--gold-soft);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .item .side { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .item select.status { font-size: 13px; padding: 5px 6px; width: auto; }
+
+  .time {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    color: var(--gold);
+    min-width: 62px;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: .04em;
+    padding: 2px 9px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .tag.stay { color: var(--gold); }
+  .tag.overdue { color: var(--red); }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .dot.zugesagt { background: var(--green); }
+  .dot.offen    { background: var(--amber); }
+  .dot.abgesagt { background: var(--red); }
+
+  button.del {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button.del:hover { color: var(--red); background: #f5eeed; }
+
+  .day-head {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    margin: 26px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .day-head:first-of-type { margin-top: 0; }
+  .day-head small {
+    display: block;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+
+  .empty {
+    color: var(--ink-soft);
+    font-size: 15px;
+    font-style: italic;
+    padding: 14px 2px;
+  }
+
+  /* To-dos */
+  .todo input[type="checkbox"] { width: 19px; height: 19px; accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+  .todo.done .title { text-decoration: line-through; color: var(--ink-soft); font-weight: 400; }
+
+  .section-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .section-head h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400; font-size: 21px; margin: 0;
+  }
+  .section-head .hint { font-size: 13px; color: var(--ink-soft); }
+
+  footer {
+    margin-top: 40px; padding-top: 18px;
+    border-top: 1px solid var(--line);
+    text-align: center; font-size: 13px; color: var(--ink-soft);
+  }
+
+  @media (max-width: 620px) {
+    .grid.g2, .grid.g3 { grid-template-columns: 1fr; }
+    nav.tabs button { font-size: 14px; padding: 10px 2px; }
+    .stat .num { font-size: 26px; }
+    .item { flex-wrap: wrap; }
+    .item .side { width: 100%; justify-content: flex-end; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Schloss Steinburg &middot; Würzburg</div>
+    <h1>80. Geburtstag</h1>
+    <div class="meta">22.–23. August 2026</div>
+    <div class="rule"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-gaeste"  aria-controls="panel-gaeste"  aria-selected="true">Gästeliste</button>
+    <button role="tab" id="tab-ablauf"  aria-controls="panel-ablauf"  aria-selected="false">Ablaufplan</button>
+    <button role="tab" id="tab-todos"   aria-controls="panel-todos"   aria-selected="false">To-dos</button>
+  </nav>
+
+  <!-- ============ Gästeliste ============ -->
+  <section id="panel-gaeste" role="tabpanel" aria-labelledby="tab-gaeste">
+    <div class="stats">
+      <div class="stat"><div class="num" id="stat-total">0</div><div class="label">Gesamt</div></div>
+      <div class="stat"><div class="num" id="stat-yes">0</div><div class="label">Zugesagt</div></div>
+      <div class="stat"><div class="num" id="stat-stay">0</div><div class="label">Übernachtungen</div></div>
+    </div>
+
+    <form class="card" id="form-guest" autocomplete="off">
+      <div class="grid g2">
+        <div class="field">
+          <label for="g-name">Name</label>
+          <input type="text" id="g-name" placeholder="Vor- und Nachname" required>
+        </div>
+        <div class="field">
+          <label for="g-status">Zusage</label>
+          <select id="g-status">
+            <option value="offen">offen</option>
+            <option value="zugesagt">zugesagt</option>
+            <option value="abgesagt">abgesagt</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <div class="field">
+          <label for="g-note">Anmerkungen</label>
+          <textarea id="g-note" placeholder="z. B. vegetarisch, Rollstuhl, Anreise Samstagmittag"></textarea>
+        </div>
+      </div>
+      <label class="checkline" style="margin-top:10px">
+        <input type="checkbox" id="g-stay"> Übernachtung
+      </label>
+      <div class="actions">
+        <button type="submit" class="btn">Gast hinzufügen</button>
+        <button type="button" class="btn ghost" id="btn-csv">Als CSV exportieren</button>
+      </div>
+    </form>
+
+    <div class="section-head">
+      <h2>Gäste</h2>
+      <span class="hint">Zusage und Übernachtung lassen sich direkt in der Liste ändern.</span>
+    </div>
+    <div class="list" id="list-guests"></div>
+  </section>
+
+  <!-- ============ Ablaufplan ============ -->
+  <section id="panel-ablauf" role="tabpanel" aria-labelledby="tab-ablauf" hidden>
+    <form class="card" id="form-event" autocomplete="off">
+      <div class="grid g3">
+        <div class="field">
+          <label for="e-day">Tag</label>
+          <select id="e-day">
+            <option value="1">Samstag, 22.8.</option>
+            <option value="2">Sonntag, 23.8.</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="e-time">Uhrzeit</label>
+          <input type="time" id="e-time" required>
+        </div>
+        <div class="field">
+          <label for="e-title">Programmpunkt</label>
+          <input type="text" id="e-title" placeholder="z. B. Sektempfang" required>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:10px">
+        <div class="field">
+          <label for="e-place">Ort</label>
+          <input type="text" id="e-place" placeholder="z. B. Schlossterrasse">
+        </div>
+        <div class="field">
+          <label for="e-person">Verantwortlich</label>
+          <input type="text" id="e-person" placeholder="z. B. Anna">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn">Programmpunkt hinzufügen</button>
+      </div>
+    </form>
+
+    <div id="schedule"></div>
+  </section>
+
+  <!-- ============ To-dos ============ -->
+  <section id="panel-todos" role="tabpanel" aria-labelledby="tab-todos" hidden>
+    <form class="card" id="form-todo" autocomplete="off">
+      <div class="grid g2">
+        <div class="field">
+          <label for="t-text">Aufgabe</label>
+          <input type="text" id="t-text" placeholder="z. B. Torte bestellen" required>
+        </div>
+        <div class="field">
+          <label for="t-due">Fällig am</label>
+          <input type="date" id="t-due">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn">Aufgabe hinzufügen</button>
+      </div>
+    </form>
+
+    <div class="section-head">
+      <h2>Offen</h2>
+      <span class="hint" id="todo-count"></span>
+    </div>
+    <div class="list" id="list-todos-open"></div>
+
+    <div class="section-head" style="margin-top:26px">
+      <h2>Erledigt</h2>
+    </div>
+    <div class="list" id="list-todos-done"></div>
+  </section>
+
+  <footer>
+    Alle Angaben werden nur lokal in diesem Browser gespeichert.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var KEY = "geburtstag-steinburg-2026";
+  var DAYS = {
+    "1": { label: "Samstag, 22. August 2026", short: "Tag 1" },
+    "2": { label: "Sonntag, 23. August 2026", short: "Tag 2" }
+  };
+
+  var data = load();
+
+  function load() {
+    var empty = { guests: [], events: [], todos: [] };
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return empty;
+      var parsed = JSON.parse(raw);
+      return {
+        guests: Array.isArray(parsed.guests) ? parsed.guests : [],
+        events: Array.isArray(parsed.events) ? parsed.events : [],
+        todos:  Array.isArray(parsed.todos)  ? parsed.todos  : []
+      };
+    } catch (e) {
+      return empty;
+    }
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(data));
+    } catch (e) {
+      alert("Die Daten konnten nicht gespeichert werden. Möglicherweise ist der Speicher des Browsers voll oder privates Surfen aktiv.");
+    }
+  }
+
+  function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null && text !== "") n.textContent = text;
+    return n;
+  }
+
+  function $(id) { return document.getElementById(id); }
+
+  /* ---------------- Tabs ---------------- */
+
+  var tabs = [
+    { btn: $("tab-gaeste"), panel: $("panel-gaeste") },
+    { btn: $("tab-ablauf"), panel: $("panel-ablauf") },
+    { btn: $("tab-todos"),  panel: $("panel-todos")  }
+  ];
+
+  tabs.forEach(function (t) {
+    t.btn.addEventListener("click", function () {
+      tabs.forEach(function (o) {
+        var active = o === t;
+        o.btn.setAttribute("aria-selected", active ? "true" : "false");
+        o.panel.hidden = !active;
+      });
+    });
+  });
+
+  /* ---------------- Gästeliste ---------------- */
+
+  function sortedGuests() {
+    return data.guests.slice().sort(function (a, b) {
+      return a.name.localeCompare(b.name, "de");
+    });
+  }
+
+  function renderGuests() {
+    var list = $("list-guests");
+    list.textContent = "";
+
+    var total = data.guests.length;
+    var yes = 0, stay = 0;
+    data.guests.forEach(function (g) {
+      if (g.status === "zugesagt") yes++;
+      if (g.stay && g.status !== "abgesagt") stay++;
+    });
+    $("stat-total").textContent = total;
+    $("stat-yes").textContent = yes;
+    $("stat-stay").textContent = stay;
+
+    if (!total) {
+      list.appendChild(el("div", "empty", "Noch keine Gäste eingetragen."));
+      return;
+    }
+
+    sortedGuests().forEach(function (g) {
+      var row = el("div", "item");
+      row.appendChild(el("div", "dot " + g.status));
+
+      var body = el("div", "body");
+      var title = el("div", "title", g.name);
+      if (g.stay && g.status !== "abgesagt") {
+        title.appendChild(document.createTextNode(" "));
+        title.appendChild(el("span", "tag stay", "Übernachtung"));
+      }
+      body.appendChild(title);
+      if (g.note) body.appendChild(el("div", "note", g.note));
+      row.appendChild(body);
+
+      var side = el("div", "side");
+
+      var sel = el("select", "status");
+      ["zugesagt", "offen", "abgesagt"].forEach(function (s) {
+        var o = el("option", null, s);
+        o.value = s;
+        if (g.status === s) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.setAttribute("aria-label", "Zusage-Status von " + g.name);
+      sel.addEventListener("change", function () {
+        g.status = sel.value;
+        save();
+        renderGuests();
+      });
+      side.appendChild(sel);
+
+      var stayLabel = el("label", "checkline");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!g.stay;
+      cb.setAttribute("aria-label", "Übernachtung für " + g.name);
+      cb.addEventListener("change", function () {
+        g.stay = cb.checked;
+        save();
+        renderGuests();
+      });
+      stayLabel.appendChild(cb);
+      stayLabel.appendChild(el("span", null, "Ü"));
+      stayLabel.title = "Übernachtung";
+      side.appendChild(stayLabel);
+
+      side.appendChild(delButton("Gast „" + g.name + "“ löschen?", function () {
+        data.guests = data.guests.filter(function (x) { return x.id !== g.id; });
+        save();
+        renderGuests();
+      }));
+
+      row.appendChild(side);
+      list.appendChild(row);
+    });
+  }
+
+  function delButton(question, onDelete) {
+    var b = el("button", "del", "×");
+    b.type = "button";
+    b.title = "Löschen";
+    b.setAttribute("aria-label", "Löschen");
+    b.addEventListener("click", function () {
+      if (confirm(question)) onDelete();
+    });
+    return b;
+  }
+
+  $("form-guest").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var name = $("g-name").value.trim();
+    if (!name) return;
+    data.guests.push({
+      id: uid(),
+      name: name,
+      status: $("g-status").value,
+      stay: $("g-stay").checked,
+      note: $("g-note").value.trim()
+    });
+    save();
+    renderGuests();
+    this.reset();
+    $("g-name").focus();
+  });
+
+  /* ---------------- CSV-Export ---------------- */
+
+  function csvCell(value) {
+    var s = String(value === undefined || value === null ? "" : value);
+    if (/[";\n\r]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  function exportCsv() {
+    if (!data.guests.length) {
+      alert("Die Gästeliste ist noch leer.");
+      return;
+    }
+    var rows = [["Name", "Zusage", "Übernachtung", "Anmerkungen"]];
+    sortedGuests().forEach(function (g) {
+      rows.push([g.name, g.status, g.stay ? "ja" : "nein", g.note || ""]);
+    });
+
+    var csv = rows.map(function (r) {
+      return r.map(csvCell).join(";");
+    }).join("\r\n");
+
+    // BOM, damit Excel die Umlaute korrekt liest
+    var blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "gaesteliste-schloss-steinburg.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  $("btn-csv").addEventListener("click", exportCsv);
+
+  /* ---------------- Ablaufplan ---------------- */
+
+  function renderSchedule() {
+    var box = $("schedule");
+    box.textContent = "";
+
+    Object.keys(DAYS).forEach(function (day) {
+      var head = el("div", "day-head");
+      head.appendChild(el("small", null, DAYS[day].short));
+      head.appendChild(document.createTextNode(DAYS[day].label));
+      box.appendChild(head);
+
+      var items = data.events.filter(function (e) { return String(e.day) === day; })
+        .sort(function (a, b) { return a.time.localeCompare(b.time); });
+
+      if (!items.length) {
+        box.appendChild(el("div", "empty", "Noch keine Programmpunkte."));
+        return;
+      }
+
+      var list = el("div", "list");
+      items.forEach(function (e) {
+        var row = el("div", "item");
+        row.appendChild(el("div", "time", e.time));
+
+        var body = el("div", "body");
+        body.appendChild(el("div", "title", e.title));
+        var details = [];
+        if (e.place) details.push(e.place);
+        if (e.person) details.push("Verantwortlich: " + e.person);
+        if (details.length) body.appendChild(el("div", "sub", details.join(" · ")));
+        row.appendChild(body);
+
+        var side = el("div", "side");
+        side.appendChild(delButton("Programmpunkt „" + e.title + "“ löschen?", function () {
+          data.events = data.events.filter(function (x) { return x.id !== e.id; });
+          save();
+          renderSchedule();
+        }));
+        row.appendChild(side);
+        list.appendChild(row);
+      });
+      box.appendChild(list);
+    });
+  }
+
+  $("form-event").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var title = $("e-title").value.trim();
+    var time = $("e-time").value;
+    if (!title || !time) return;
+    var day = $("e-day").value;
+    data.events.push({
+      id: uid(),
+      day: day,
+      time: time,
+      title: title,
+      place: $("e-place").value.trim(),
+      person: $("e-person").value.trim()
+    });
+    save();
+    renderSchedule();
+    this.reset();
+    $("e-day").value = day;
+    $("e-title").focus();
+  });
+
+  /* ---------------- To-dos ---------------- */
+
+  function formatDate(iso) {
+    if (!iso) return "";
+    var p = iso.split("-");
+    if (p.length !== 3) return iso;
+    return p[2] + "." + p[1] + "." + p[0];
+  }
+
+  function today() {
+    var d = new Date();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + m + "-" + day;
+  }
+
+  function renderTodos() {
+    var open = $("list-todos-open");
+    var done = $("list-todos-done");
+    open.textContent = "";
+    done.textContent = "";
+
+    var sorted = data.todos.slice().sort(function (a, b) {
+      if (!a.due && !b.due) return 0;
+      if (!a.due) return 1;
+      if (!b.due) return -1;
+      return a.due.localeCompare(b.due);
+    });
+
+    var openCount = 0;
+    var now = today();
+
+    sorted.forEach(function (t) {
+      var row = el("div", "item todo" + (t.done ? " done" : ""));
+
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!t.done;
+      cb.setAttribute("aria-label", "Aufgabe erledigt: " + t.text);
+      cb.addEventListener("change", function () {
+        t.done = cb.checked;
+        save();
+        renderTodos();
+      });
+      row.appendChild(cb);
+
+      var body = el("div", "body");
+      body.appendChild(el("div", "title", t.text));
+      if (t.due) {
+        var sub = el("div", "sub");
+        sub.appendChild(document.createTextNode("Fällig am " + formatDate(t.due) + " "));
+        if (!t.done && t.due < now) sub.appendChild(el("span", "tag overdue", "überfällig"));
+        body.appendChild(sub);
+      }
+      row.appendChild(body);
+
+      var side = el("div", "side");
+      side.appendChild(delButton("Aufgabe „" + t.text + "“ löschen?", function () {
+        data.todos = data.todos.filter(function (x) { return x.id !== t.id; });
+        save();
+        renderTodos();
+      }));
+      row.appendChild(side);
+
+      if (t.done) {
+        done.appendChild(row);
+      } else {
+        open.appendChild(row);
+        openCount++;
+      }
+    });
+
+    if (!openCount) open.appendChild(el("div", "empty", "Keine offenen Aufgaben."));
+    if (!done.childNodes.length) done.appendChild(el("div", "empty", "Noch nichts abgehakt."));
+    $("todo-count").textContent = openCount === 1 ? "1 offene Aufgabe" : openCount + " offene Aufgaben";
+  }
+
+  $("form-todo").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var text = $("t-text").value.trim();
+    if (!text) return;
+    data.todos.push({
+      id: uid(),
+      text: text,
+      due: $("t-due").value,
+      done: false
+    });
+    save();
+    renderTodos();
+    this.reset();
+    $("t-text").focus();
+  });
+
+  /* ---------------- Start ---------------- */
+
+  renderGuests();
+  renderSchedule();
+  renderTodos();
+})();
+</script>
+</body>
+</html>
