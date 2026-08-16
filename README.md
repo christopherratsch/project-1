@@ -17,6 +17,19 @@ keine Datenbank – einfach im Browser öffnen.
 - **CSV-Export** der Gästeliste (Semikolon-getrennt, mit BOM – öffnet sich
   direkt in Excel), z. B. für das Hotel.
 
+## Veröffentlichen (GitHub Pages)
+
+Der Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) stellt
+die App bei jedem Push auf diesen Branch bereit. Einmalig muss Pages dafür noch
+von Hand eingeschaltet werden – ein Workflow darf die Pages-Site nicht selbst
+anlegen:
+
+**Settings → Pages → Source: „GitHub Actions"**
+
+Danach unter *Actions → Deploy to GitHub Pages → Run workflow* einmal starten.
+Da das Repository privat ist, setzt Pages einen bezahlten Plan (GitHub Pro oder
+höher) voraus; alternativ das Repository auf öffentlich stellen.
+
 ## Daten
 
 Alle Eingaben liegen im `localStorage` des Browsers – sie bleiben also nach dem

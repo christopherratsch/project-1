@@ -24,10 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # enablement: true schaltet GitHub Pages ein, falls noch nicht aktiv
+      # Voraussetzung (einmalig, von Hand):
+      # Settings -> Pages -> Source: "GitHub Actions"
+      # Das Anlegen der Pages-Site per Workflow ist nicht möglich,
+      # der GITHUB_TOKEN darf das nicht.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
